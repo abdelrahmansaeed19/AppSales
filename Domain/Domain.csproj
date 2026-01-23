@@ -9,7 +9,11 @@
   <ItemGroup>
     <Folder Include="Common\" />
     <Folder Include="Entities\Customers\" />
+    <Folder Include="Entities\Auth\" />
+    <Folder Include="Entities\Customers\" />
     <Folder Include="Entities\Accounting\" />
+    <Folder Include="Entities\Expenses\" />
+    <Folder Include="Entities\Reports\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Rules\" />
     <Folder Include="ValueObjects\" />
