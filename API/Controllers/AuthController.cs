@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace API.Controllers
+﻿namespace API.Modules.Auth
 {
     [Route("api/[controller]")]
     [ApiController]
