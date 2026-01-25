@@ -1,8 +1,10 @@
-﻿using Domain.Entities.Identity;
+﻿using Domain.Entities.Customers;
+using Domain.Entities.Expenses;
 using Domain.Entities.Inventory;
 using Domain.Entities.Sales;
 using Domain.Entities.Tenants;
-using Domain.Enums;
+using Domain.Entities.Users;
+//using Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts
@@ -21,9 +23,18 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+
+        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        //{
+        //    return await base.SaveChangesAsync(cancellationToken);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppSalesDbContext).Assembly);
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Tenant>()

@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Customers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace API.Modules.Customers
 {
     [Route("api/[controller]")]
     [ApiController]

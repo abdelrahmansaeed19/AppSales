@@ -1,4 +1,7 @@
-﻿namespace API.Modules.Tenant
+﻿using Microsoft.AspNetCore.Mvc;
+
+
+namespace API.Modules.Tenant
 {
     [Route("api/[controller]")]
     [ApiController]

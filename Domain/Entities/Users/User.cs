@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities.Identity
+namespace Domain.Entities.Users
 {
     public class User
     {
@@ -22,5 +22,32 @@ namespace Domain.Entities.Identity
         // Navigation
         public Tenant Tenant { get; set; } = null!;
         public Branch? Branch { get; set; }
+
+        public static User Create(int tenantId, string name, string email, string passwordHash, UserRole role, int? branchId)
+        {
+            return new User
+            {
+                TenantId = tenantId,
+                Name = name,
+                Email = email,
+                Password = passwordHash,
+                Role = role,
+                BranchId = branchId
+            };
+        }
+
+        public void Deactivate()
+        {
+            IsActive = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateDetails(string name, UserRole role, long? branchId)
+        {
+            Name = name;
+            BranchId = branchId;
+            Role = role;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

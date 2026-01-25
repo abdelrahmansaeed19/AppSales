@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Reports
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace API.Modules.Reports
 {
     [Route("api/[controller]")]
     [ApiController]

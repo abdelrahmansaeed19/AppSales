@@ -1,4 +1,6 @@
-﻿namespace API.Modules.Inventory
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace API.Modules.Inventory
 {
     [Route("api/[controller]")]
     [ApiController]

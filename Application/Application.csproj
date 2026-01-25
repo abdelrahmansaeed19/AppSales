@@ -11,18 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="DTOs\" />
-    <Folder Include="Features\Auth\" />
-    <Folder Include="Features\Inventory\" />
-    <Folder Include="Features\Reports\" />
-    <Folder Include="Features\Sales\" />
-    <Folder Include="Features\Tenants\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.0.0" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.0.0" />
   </ItemGroup>
