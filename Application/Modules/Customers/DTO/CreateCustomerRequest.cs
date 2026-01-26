@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Application.Modules.Customers.DTO
 {
-    internal class CreateCustomerRequest
+    public class CreateCustomerRequest
     {
+        public string Name { get; set; } = string.Empty;
+        public decimal InitialBalance { get; set; } = 0;
     }
 }

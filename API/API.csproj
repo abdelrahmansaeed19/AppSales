@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts%28DTOs%29\Customers\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Filters\" />
     <Folder Include="wwwroot\" />

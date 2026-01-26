@@ -7,6 +7,8 @@ using Domain.Entities.Tenants;
 using Domain.Entities.Users;
 //using Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Transactions;
+using Transaction = Domain.Entities.Customers.Transaction;
 
 namespace Infrastructure.Persistence.Contexts
 {
@@ -26,6 +28,7 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<Material> Materials { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         //{
@@ -33,6 +36,8 @@ namespace Infrastructure.Persistence.Contexts
         //}
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<EmailVerificationCode> EmailVerificationCodes { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppSalesDbContext).Assembly);

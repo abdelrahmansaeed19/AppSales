@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.IRepository;
 using Application.Interfaces.IRepository.Auth;
+using Application.Interfaces.IServices;
 using Application.Interfaces.IServices.Auth;
 using Application.Modules.Auth.Handler;
 using Infrastructure.Persistence.Contexts;
@@ -28,11 +29,13 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 
 // 3️⃣ Services
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // 4️⃣ MediatR Handlers
 builder.Services.AddMediatR(cfg =>
