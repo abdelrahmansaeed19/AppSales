@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppSalesDbContext>(options =>
 //    provider.GetRequiredService<AppSalesDbContext>());
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
