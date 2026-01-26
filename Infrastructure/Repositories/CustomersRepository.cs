@@ -17,9 +17,14 @@ namespace Infrastructure.Repositories
         private readonly AppSalesDbContext _context;
         public CustomerRepository(AppSalesDbContext context) => _context = context;
 
-        public async Task<Customer> GetByIdAsync(int id) =>
-            await _context.Customers.Include(c => c.Transactions).FirstOrDefaultAsync(c => c.Id == id);
+        public async Task<Customer> GetByIdAsync(int id)
+        {
+            var customer = await _context.Customers
+                .Include(c => c.Transactions)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
+            return customer ?? throw new KeyNotFoundException($"Customer {id} not found");
+        }
         public async Task<List<Customer>> GetAllAsync() =>
             await _context.Customers.ToListAsync();
 

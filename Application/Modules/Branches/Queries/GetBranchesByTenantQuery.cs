@@ -19,10 +19,10 @@ namespace Application.Modules.Branches.Queries
             var branchDtos = branches.Select(branch => new BranchDto
             {
                 Id = branch.Id,
-                Name = branch.Name,
-                Address = branch.Address,
-                Phone = branch.Phone,
-                Email = branch.Email,
+                Name = branch.Name ?? "",
+                Address = branch.Address ?? "",
+                Phone = branch.Phone ?? "",
+                Email = branch.Email ?? "",
                 IsActive = branch.IsActive,
                 TenantId = branch.TenantId
             }).ToList();

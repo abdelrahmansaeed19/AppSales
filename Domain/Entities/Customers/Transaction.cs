@@ -14,6 +14,6 @@ namespace Domain.Entities.Customers
         public decimal Balance { get; set; }
         public DateTime Date { get; set; }
         public int CustomerId { get; set; } 
-        public Customer Customer { get; set; } 
+        public Customer? Customer { get; set; } 
     }
 }

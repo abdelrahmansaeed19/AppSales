@@ -19,11 +19,11 @@ namespace Application.Modules.Customers.DTO
 
     public class TransactionDto
     {
-        public string Type { get; set; } = string.Empty; // invoice, payment
-        public string Description { get; set; } = string.Empty;
-        public decimal Debit { get; set; }
-        public decimal Credit { get; set; }
-        public decimal Balance { get; set; }
-        public DateTime Date { get; set; }
+        public string? Type { get; set; } = string.Empty; // invoice, payment
+        public string? Description { get; set; } = string.Empty;
+        public decimal? Debit { get; set; }
+        public decimal? Credit { get; set; }
+        public decimal? Balance { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

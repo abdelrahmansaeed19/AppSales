@@ -44,11 +44,17 @@ namespace Infrastructure.Services.Auth
 
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
 
-            await smtp.ConnectAsync(
-                _config["Email:SmtpServer"],
-                int.Parse(_config["Email:Port"]),
-                false
-            );
+
+            var smtpServer = _config["Email:SmtpServer"]
+                ?? throw new InvalidOperationException("Email:SmtpServer is not configured.");
+
+            var portString = _config["Email:Port"]
+                ?? throw new InvalidOperationException("Email:Port is not configured.");
+
+            if (!int.TryParse(portString, out var port))
+                throw new InvalidOperationException("Email:Port must be a valid number.");
+
+            await smtp.ConnectAsync(smtpServer, port, false);
 
             await smtp.AuthenticateAsync(
                 _config["Email:Username"],

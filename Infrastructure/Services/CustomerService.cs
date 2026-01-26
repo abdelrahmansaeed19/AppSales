@@ -30,15 +30,15 @@ namespace Infrastructure.Services
             return new CustomerResponse
             {
                 Id = result.Id,
-                Name = result.Name,
+                Name = result.Name ?? "",
                 CurrentBalance = result.CurrentBalance
             };
         }
 
         public async Task<CustomerResponse> UpdateCustomerAsync(int id, UpdateCustomerRequest request)
         {
-            var customer = await _customerRepository.GetByIdAsync(id);
-            if (customer == null) return null;
+            var customer = await _customerRepository.GetByIdAsync(id)
+                 ?? throw new KeyNotFoundException($"Customer {id} not found");
 
             customer.Name = request.Name;
             customer.CurrentBalance = request.CurrentBalance;
@@ -48,7 +48,7 @@ namespace Infrastructure.Services
             return new CustomerResponse
             {
                 Id = updated.Id,
-                Name = updated.Name,
+                Name = updated.Name ?? "",
                 CurrentBalance = updated.CurrentBalance
             };
         }
@@ -60,13 +60,13 @@ namespace Infrastructure.Services
 
         public async Task<CustomerResponse> GetCustomerByIdAsync(int id)
         {
-            var customer = await _customerRepository.GetByIdAsync(id);
-            if (customer == null) return null;
+            var customer = await _customerRepository.GetByIdAsync(id)
+          ?? throw new KeyNotFoundException($"Customer with ID {id} not found.");
 
             return new CustomerResponse
             {
                 Id = customer.Id,
-                Name = customer.Name,
+                Name = customer.Name ?? "",
                 CurrentBalance = customer.CurrentBalance
             };
         }
@@ -77,15 +77,15 @@ namespace Infrastructure.Services
             return customers.Select(c => new CustomerResponse
             {
                 Id = c.Id,
-                Name = c.Name,
+                Name = c.Name ?? "",
                 CurrentBalance = c.CurrentBalance
             }).ToList();
         }
 
         public async Task<CustomerStatementResponse> GetCustomerStatementAsync(int customerId)
         {
-            var customer = await _customerRepository.GetByIdAsync(customerId);
-            if (customer == null) return null;
+            var customer = await _customerRepository.GetByIdAsync(customerId)
+       ?? throw new KeyNotFoundException($"Customer {customerId} not found");
 
             var transactions = await _customerRepository.GetCustomerTransactionsAsync(customerId);
 
@@ -94,13 +94,13 @@ namespace Infrastructure.Services
                 Customer = new CustomerResponse
                 {
                     Id = customer.Id,
-                    Name = customer.Name,
+                    Name = customer.Name ?? "",
                     CurrentBalance = customer.CurrentBalance
                 },
                 Transactions = transactions.Select(t => new Application.Modules.Customers.DTO.TransactionDto
                 {
                     Type = t.Type,
-                    Description = t.Description,
+                    Description = t.Description ,
                     Debit = t.Debit,
                     Credit = t.Credit,
                     Balance = t.Balance,

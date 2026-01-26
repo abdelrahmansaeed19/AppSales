@@ -27,7 +27,8 @@ namespace Infrastructure.Repositories
 
         public async Task<Tenant> GetByIdAsync(long id)
         {
-            return await _context.Set<Tenant>().FindAsync(id);
+            var tenant = await _context.Set<Tenant>().FindAsync(id);
+            return tenant ?? throw new KeyNotFoundException($"Tenant {id} not found.");
         }
         public async Task DeleteAsync(long id)
         {
