@@ -12,6 +12,13 @@ namespace Application.Interfaces.IRepository
 
         Task DeleteAsync(string email);
 
+        //get all users
+        Task<List<User>> GetAllAsync();
+
+        Task<List<User>> GetAllByTenantIdAsync(long tenantId);
+
+        Task<List<User>> GetAllByBranchAsync(long branchId);
+
         Task<User?> GetByIdAsync(long id);
 
         // NEW: Explicit update (optional if you rely on EF Core change tracking, but good for pattern)

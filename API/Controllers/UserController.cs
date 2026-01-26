@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Application.Modules.Users.Commands;
+using Application.Modules.Users.Queries;
 
 
 namespace API.Controllers
@@ -26,6 +27,36 @@ namespace API.Controllers
             catch (InvalidOperationException ex)
             {
                 return BadRequest(new { Error = ex.Message });
+            }
+        }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetUser(long id)
+        {
+            var query = new GetUserByIdQuery(id);
+            try
+            {
+                var user = await _mediator.Send(query);
+                return Ok(user);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+        }
+
+        [HttpGet("getByTenant/{tenantId}")]
+        public async Task<IActionResult> GetUsersByTenant(long tenantId)
+        {
+            var query = new GetUsersByTenantQuery(tenantId);
+            try
+            {
+                var users = await _mediator.Send(query);
+                return Ok(users);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
             }
         }
 
