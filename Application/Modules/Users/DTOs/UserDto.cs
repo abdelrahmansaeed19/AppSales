@@ -8,15 +8,15 @@ namespace Application.Modules.Users.DTOs
 {
     public record UserDto
     {
-        long Id { get; init; }
+        public long Id { get; init; }
 
         [Required]
-        string Name { get; init; }
+        public string Name { get; init; }
 
         [Required]
-        string Email { get; init; }
-        UserRole Role { get; init; }
-        bool IsActive { get; init; }
-        int? BranchId { get; init; }
+        public string Email { get; init; }
+        public UserRole Role { get; init; }
+        public bool IsActive { get; init; }
+        public long? BranchId { get; init; }
     }
 }

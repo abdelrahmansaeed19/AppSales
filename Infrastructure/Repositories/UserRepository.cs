@@ -19,6 +19,29 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _context.Set<User>().ToListAsync();
+        }
+
+        public async Task<List<User>> GetAllByTenantIdAsync(long tenantId)
+        {
+            return await _context.Set<User>()
+                .AsNoTracking()
+                .Include(u => u.Branch)
+                .Where(u => u.TenantId == tenantId)
+                .ToListAsync();
+        }
+
+        public async Task<List<User>> GetAllByBranchAsync(long branchId)
+        {
+            return await _context.Set<User>()
+                .AsNoTracking()
+                .Include(u => u.Tenant)
+                .Where(u => u.BranchId == branchId)
+                .ToListAsync();
+        }
+
         public async Task<User?> GetByIdAsync(long id)
         {
             return await _context.Set<User>().FindAsync(id);

@@ -5,7 +5,6 @@ using Domain.Entities.Inventory;
 using Domain.Entities.Sales;
 using Domain.Entities.Tenants;
 using Domain.Entities.Users;
-//using Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using Transaction = Domain.Entities.Customers.Transaction;
@@ -77,7 +76,7 @@ namespace Infrastructure.Persistence.Contexts
                 entity.Property(e => e.SellingPrice).HasPrecision(10, 2);
                 entity.Property(e => e.CurrentStock).HasPrecision(10, 2);
                 entity.Property(e => e.MinStockLevel).HasPrecision(10, 2);
-                entity.HasIndex(e => e.Sku).IsUnique(); // Unique SKU [cite: 486]
+                entity.HasIndex(e => e.Sku).IsUnique();
             });
 
             modelBuilder.Entity<Material>(entity =>
@@ -86,7 +85,6 @@ namespace Infrastructure.Persistence.Contexts
                 entity.Property(e => e.MinQuantity).HasPrecision(10, 2);
                 entity.Property(e => e.CostPerUnit).HasPrecision(10, 2);
 
-                // Optional: Map property to specific column name or constraints if needed
                 entity.Property(e => e.Unit).HasMaxLength(50).IsRequired();
             });
         }

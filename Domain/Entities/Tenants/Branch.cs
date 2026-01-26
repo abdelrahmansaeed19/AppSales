@@ -19,5 +19,33 @@ namespace Domain.Entities.Tenants
 
         // Navigation
         public Tenant Tenant { get; set; } = null!;
+
+        public static Branch Create(long tenantId, string name, string? address = null, string? phone = null, string? email = null)
+        {
+            return new Branch
+            {
+                TenantId = tenantId,
+                Name = name,
+                Address = address,
+                Phone = phone,
+                Email = email
+            };
+        }
+
+        public void Update(string name, string? address = null, string? phone = null, string? email = null, bool isActive = true)
+        {
+            Name = name;
+            Address = address;
+            Phone = phone;
+            Email = email;
+            IsActive = isActive;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Deactivate()
+        {
+            IsActive = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }
