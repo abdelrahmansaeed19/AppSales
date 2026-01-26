@@ -1,7 +1,10 @@
 ﻿using Application.Interfaces.IRepository;
-using Infrastructure.Persistence.Contexts;
 using Domain.Entities.Tenants;
+using Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Infrastructure.Repositories
 {

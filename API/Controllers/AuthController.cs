@@ -1,10 +1,115 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Modules.Auth.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Modules.Auth
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("Auth")]
     public class AuthController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public AuthController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        // ---------------- Register ---------------
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+        {
+            try
+            {
+                // Sends verification code only; user not yet created
+                await _mediator.Send(command);
+                return Ok(new { message = "Verification email sent. Please check your inbox to complete registration." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
+        // ---------------- Verify Email ----------------
+        [HttpPost("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailCommand command)
+        {
+            try
+            {
+                // Creates user after successful verification
+                await _mediator.Send(command);
+                return Ok(new { message = "Email verified. Your account is now active." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
+        // ---------------- Resend Verification ----------------
+        [HttpPost("resend-verification")]
+        public async Task<IActionResult> ResendVerification([FromBody] ResendVerificationCommand command)
+        {
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { message = "Verification email resent. Please check your inbox." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
+        // ---------------- Login ----------------
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        {
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
+        // ---------------- Refresh Token ----------------
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+        {
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
     }
 }

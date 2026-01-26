@@ -22,7 +22,7 @@ namespace Domain.Entities.Users
         // Navigation
         public Tenant Tenant { get; set; } = null!;
         public Branch? Branch { get; set; }
-
+        public bool IsEmailVerified { get; set; } = false;
         public static User Create(int tenantId, string name, string email, string passwordHash, UserRole role, int? branchId)
         {
             return new User
