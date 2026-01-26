@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Repositories
+namespace Application.Interfaces.IServices
 {
-    internal class AuthRepository
+    internal class ICustomerService
     {
     }
 }

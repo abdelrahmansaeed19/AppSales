@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Customers;
+﻿using Domain.Entities.Auth;
+using Domain.Entities.Customers;
 using Domain.Entities.Expenses;
 using Domain.Entities.Inventory;
 using Domain.Entities.Sales;
@@ -30,7 +31,8 @@ namespace Infrastructure.Persistence.Contexts
         //{
         //    return await base.SaveChangesAsync(cancellationToken);
         //}
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<EmailVerificationCode> EmailVerificationCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppSalesDbContext).Assembly);
