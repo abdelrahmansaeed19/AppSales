@@ -1,4 +1,5 @@
 ﻿using API.Responses;
+using Application.Exceptions;
 using Application.Modules.Customers.Commands;
 using Application.Modules.Customers.DTO;
 using Application.Modules.Customers.Queries;
@@ -20,51 +21,75 @@ namespace API.Controllers
             }
 
             [HttpGet]
-            public async Task<IActionResult> GetAll()
-            {
-                var customers = await _mediator.Send(new GetAllCustomersQuery());
+        public async Task<IActionResult> GetAll()
+        {
+            var customers = await _mediator.Send(new GetAllCustomersQuery());
             return Ok(customers);
-            }
-
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetById(int id)
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
             {
                 var customer = await _mediator.Send(new GetCustomerByIdQuery(id));
                 return Ok(customer);
             }
-
-            [HttpPost]
-            public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
+            catch (NotFoundException ex)
             {
-                var result = await _mediator.Send(command);
-                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+                return NotFound(new { message = ex.Message }); 
             }
+        }
 
-            [HttpPut("{id}")]
-            public async Task<IActionResult> Update(int id, [FromBody] UpdateCustomerCommand command)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result); 
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateCustomerCommand command)
+        {
+            try
             {
                 command.Id = id;
                 var result = await _mediator.Send(command);
-                return Ok(result);
+                return Ok(result); 
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _mediator.Send(new DeleteCustomerCommand(id));
-            return Ok(new ApiResponse<string> { Success = true, Data = "Customer deleted successfully" });
+            try
+            {
+                await _mediator.Send(new DeleteCustomerCommand(id));
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message }); 
+            }
         }
 
         [HttpGet("{id}/statement")]
         public async Task<IActionResult> GetStatement(int id)
         {
-            var statement = await _mediator.Send(new GetCustomerStatementQuery(id));
-
-            if (statement == null)
-                return NotFound(new ApiResponse<string> { Success = false, Data = "Customer not found" });
-
-            return Ok(new ApiResponse<CustomerStatementResponse>(statement));
+            try
+            {
+                var statement = await _mediator.Send(new GetCustomerStatementQuery(id));
+                return Ok(statement); // return the object directly
+            }
+            catch (Application.Exceptions.NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message }); // simple JSON message
+            }
         }
-    }
 
     }
+
+}

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.IRepository;
+﻿using Application.Exceptions;
+using Application.Interfaces.IRepository;
 using Application.Interfaces.IServices;
 using Application.Modules.Customers.DTO;
 using Domain.Entities.Customers;
@@ -38,7 +39,8 @@ namespace Infrastructure.Services
         public async Task<CustomerResponse> UpdateCustomerAsync(int id, UpdateCustomerRequest request)
         {
             var customer = await _customerRepository.GetByIdAsync(id);
-            if (customer == null) return null;
+            if (customer == null)
+                throw new NotFoundException($"Customer with ID {id} not found.");
 
             customer.Name = request.Name;
             customer.CurrentBalance = request.CurrentBalance;
@@ -55,13 +57,18 @@ namespace Infrastructure.Services
 
         public async Task DeleteCustomerAsync(int id)
         {
+            var customer = await _customerRepository.GetByIdAsync(id);
+            if (customer == null)
+                throw new NotFoundException($"Customer with ID {id} not found.");
+
             await _customerRepository.DeleteAsync(id);
         }
 
         public async Task<CustomerResponse> GetCustomerByIdAsync(int id)
         {
             var customer = await _customerRepository.GetByIdAsync(id);
-            if (customer == null) return null;
+            if (customer == null)
+                throw new NotFoundException($"Customer with ID {id} not found.");
 
             return new CustomerResponse
             {
@@ -85,7 +92,8 @@ namespace Infrastructure.Services
         public async Task<CustomerStatementResponse> GetCustomerStatementAsync(int customerId)
         {
             var customer = await _customerRepository.GetByIdAsync(customerId);
-            if (customer == null) return null;
+            if (customer == null)
+                throw new NotFoundException($"Customer with ID {customerId} not found.");
 
             var transactions = await _customerRepository.GetCustomerTransactionsAsync(customerId);
 
@@ -97,7 +105,7 @@ namespace Infrastructure.Services
                     Name = customer.Name,
                     CurrentBalance = customer.CurrentBalance
                 },
-                Transactions = transactions.Select(t => new Application.Modules.Customers.DTO.TransactionDto
+                Transactions = transactions.Select(t => new TransactionDto
                 {
                     Type = t.Type,
                     Description = t.Description,
