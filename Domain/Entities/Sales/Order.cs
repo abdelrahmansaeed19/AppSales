@@ -26,5 +26,46 @@ namespace Domain.Entities.Sales
 
         // Navigation
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+
+        public static Order Create(long tenantId, long branchId, long? shiftId, long? customerId, OrderType orderType, decimal subtotal, decimal taxAmount, decimal discountAmount, decimal totalAmount, string? notes, long? createdByUserId)
+        {
+            return new Order
+            {
+                TenantId = tenantId,
+                BranchId = branchId,
+                ShiftId = shiftId,
+                CustomerId = customerId,
+                OrderType = orderType,
+                Subtotal = subtotal,
+                TaxAmount = taxAmount,
+                DiscountAmount = discountAmount,
+                TotalAmount = totalAmount,
+                Notes = notes,
+                CreatedByUserId = createdByUserId
+            };
+        }
+
+        public void UpdateStatus(OrderStatus newStatus)
+        {
+            Status = newStatus;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdatePaidAmount(decimal paidAmount)
+        {
+            PaidAmount = paidAmount;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateOrderDetails(ICollection<OrderDetail> orderDetails)
+        {
+            OrderDetails = orderDetails;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public bool IsPaidInFull()
+        {
+            return PaidAmount >= TotalAmount;
+        }
     }
 }
