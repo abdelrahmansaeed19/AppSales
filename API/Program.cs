@@ -32,12 +32,15 @@ builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<ISaleRepository, SalesRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+
 
 
 // 3️⃣ Services
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 // 4️⃣ MediatR Handlers
 builder.Services.AddMediatR(cfg =>

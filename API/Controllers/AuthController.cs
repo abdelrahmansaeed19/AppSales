@@ -111,5 +111,44 @@ namespace API.Modules.Auth
                 return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
             }
         }
+
+        // ---------------- Forgot Password ----------------
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { message = "Reset code sent to your email." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
+        // ---------------- Reset Password ----------------
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new { message = "Password reset successfully." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
+            }
+        }
+
     }
 }
