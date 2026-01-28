@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(b => b.UpdatedAt).HasColumnType("datetime");
 
             builder.HasOne(b => b.Tenant)
-                   .WithMany()
+                   .WithMany(t => t.Branches)
                    .HasForeignKey(b => b.TenantId)
                    .OnDelete(DeleteBehavior.Cascade);
         }

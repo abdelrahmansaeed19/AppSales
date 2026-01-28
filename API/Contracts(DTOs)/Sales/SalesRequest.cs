@@ -1,6 +1,5 @@
 ﻿namespace API.Modules.Sales
 {
-    public class Sales_Services
-    {
-    }
+    public record CancelOrderRequestDto(string? Reason);
+
 }

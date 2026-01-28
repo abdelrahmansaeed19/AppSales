@@ -40,6 +40,7 @@ namespace Application.Modules.Tenants.Commands
             );
 
             var tenantId = await _tenantRepository.AddAsync(tenant);
+
             return tenantId;
         }
     }

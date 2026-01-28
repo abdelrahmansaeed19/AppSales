@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
   <ItemGroup>
     <Folder Include="Common\" />
     <Folder Include="Entities\Accounting\" />
@@ -13,6 +14,22 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Rules\" />
     <Folder Include="ValueObjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net10.0\Domain.dll" />
+    <None Include="bin\Debug\net10.0\Domain.pdb" />
+    <None Include="obj\Debug\net10.0\Domain.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\net10.0\Domain.assets.cache" />
+    <None Include="obj\Debug\net10.0\Domain.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\net10.0\Domain.dll" />
+    <None Include="obj\Debug\net10.0\Domain.GeneratedMSBuildEditorConfig.editorconfig" />
+    <None Include="obj\Debug\net10.0\Domain.pdb" />
+    <None Include="obj\Debug\net10.0\refint\Domain.dll" />
+    <None Include="obj\Debug\net10.0\ref\Domain.dll" />
+    <None Include="obj\Domain.csproj.nuget.g.props" />
+    <None Include="obj\Domain.csproj.nuget.g.targets" />
+    <None Include="obj\project.nuget.cache" />
   </ItemGroup>
 
 </Project>

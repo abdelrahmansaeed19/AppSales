@@ -30,6 +30,7 @@ builder.Services.AddScoped<IEmailVerificationRepository, EmailVerificationReposi
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+builder.Services.AddScoped<ISaleRepository, SalesRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 
