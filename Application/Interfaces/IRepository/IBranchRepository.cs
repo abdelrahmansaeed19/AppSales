@@ -13,5 +13,6 @@ namespace Application.Interfaces.IRepository
         Task UpdateAsync(Branch branch);
         Task DeleteAsync(long id);
         Task<bool> ExistsAsync(long id);
+        Task<bool> ExistsByNameAsync(string name);
     }
 }

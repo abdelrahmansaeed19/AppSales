@@ -1,6 +1,7 @@
 ﻿using Domain.Enums;
 using MediatR;
 using Domain.Entities.Sales;
+using Application.Modules.Sales.DTOs;
 
 namespace Application.Modules.Sales.Commands
 {
@@ -8,6 +9,6 @@ namespace Application.Modules.Sales.Commands
         long OrderId,
         OrderStatus newStatus,
         decimal paidAmount,
-        ICollection<OrderDetail> orderDetails
+        List<UpdateOrderDetailDto> newDetails
         ) : IRequest<Unit>;
 }

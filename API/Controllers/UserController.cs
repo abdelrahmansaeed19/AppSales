@@ -2,10 +2,13 @@
 using MediatR;
 using Application.Modules.Users.Commands;
 using Application.Modules.Users.Queries;
-
+using API.Responses;
+using Application.Modules.Users.DTOs;
 
 namespace API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IMediator _mediator;
@@ -22,11 +25,16 @@ namespace API.Controllers
             {
                 var userId = await _mediator.Send(command);
 
-                return CreatedAtAction(nameof(CreateUser), new { UserId = userId });
+                return CreatedAtAction(nameof(GetUser), new { id = userId }, new ApiResponse<long>(userId));
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(new { Error = ex.Message });
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
@@ -36,12 +44,18 @@ namespace API.Controllers
             var query = new GetUserByIdQuery(id);
             try
             {
-                var user = await _mediator.Send(query);
-                return Ok(user);
+                UserDto user = await _mediator.Send(query);
+
+                return Ok(new ApiResponse<UserDto>(user));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
@@ -51,30 +65,38 @@ namespace API.Controllers
             var query = new GetUsersByTenantQuery(tenantId);
             try
             {
-                var users = await _mediator.Send(query);
-                return Ok(users);
+                List<UserDto> users = await _mediator.Send(query);
+
+                return Ok(new ApiResponse<List<UserDto>>(users));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateUser(long id, [FromBody] UpdateUserCommand command)
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
-            if (id != command.UserId)
-            {
-                return BadRequest(new { Error = "User ID mismatch." });
-            }
             try
             {
                 await _mediator.Send(command);
-                return NoContent();
+
+                return Ok(new ApiResponse<string>("User updated successfully."));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
@@ -85,11 +107,16 @@ namespace API.Controllers
             try
             {
                 await _mediator.Send(command);
-                return NoContent();
+                return Ok(new ApiResponse<string>("User deactivated successfully."));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
     }

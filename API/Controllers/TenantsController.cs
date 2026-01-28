@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Application.Modules.Tenants.Commands;
 using Application.Modules.Tenant.Queries;
+using API.Responses;
+using Application.Modules.Tenant.DTOs;
 
 namespace API.Modules.Tenant
 {
@@ -21,42 +23,59 @@ namespace API.Modules.Tenant
             try
             {
                 var tenantId = await _mediator.Send(command);
-                return CreatedAtAction(nameof(CreateTenant), new { TenantId = tenantId });
+                // Return Created (201) but with the standard ApiResponse structure
+                return CreatedAtAction(nameof(GetTenant), new { id = tenantId }, new ApiResponse<long>(tenantId));
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(new { Error = ex.Message });
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetTenant(long id)
         {
-            var query = new GetTenantByIdQuery(id);
-
-            var tenant = await _mediator.Send(query);
-            if (tenant == null)
+            try
             {
-                return NotFound(new { Error = "Tenant not found." });
+                var query = new GetTenantByIdQuery(id);
+
+                TenantDto tenant = await _mediator.Send(query);
+
+                if (tenant == null)
+                {
+                    return NotFound(new ApiResponse<string> { Success = false, Data = "Tenant not found." });
+                }
+                return Ok(new ApiResponse<TenantDto>(tenant));
             }
-            return Ok(tenant);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
         }
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateTenant(long id, [FromBody] UpdateTenantCommand command)
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateTenant([FromBody] UpdateTenantCommand command)
         {
-            if (id != command.Id)
-            {
-                return BadRequest(new { Error = "Tenant ID mismatch." });
-            }
             try
             {
                 await _mediator.Send(command);
-                return NoContent();
+
+                return Ok(new ApiResponse<string>("Tenant updated successfully."));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
@@ -67,13 +86,17 @@ namespace API.Modules.Tenant
             try
             {
                 await _mediator.Send(command);
-                return NoContent();
+                return Ok(new ApiResponse<string>("Tenant deactivated successfully."));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
-
     }
 }

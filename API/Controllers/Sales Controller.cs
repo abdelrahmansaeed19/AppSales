@@ -4,7 +4,6 @@ using Application.Modules.Sales.Commands;
 using Application.Modules.Sales.Queries;
 using Application.Modules.Sales.DTOs;
 using Domain.Enums;
-using API.Modules.Sales;
 using API.Responses;
 
 namespace API.Modules.Sales
@@ -21,56 +20,57 @@ namespace API.Modules.Sales
         }
 
         // =================================================================
-        // 1. COMMANDS (الكتابة والتعديل)
+        // 1. COMMANDS
         // =================================================================
 
-        [HttpPost("Create")]
+        [HttpPost("CreateOrder")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
         {
             try
             {
+                // Assuming Send returns an ID or object, capture it if needed
                 var result = await _mediator.Send(command);
 
-                return Ok(new ApiResponse<string> { Success = true, Data = "Order Requested Successfully!" });
+                return Ok(new ApiResponse<string>("Order Requested Successfully!"));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
-        [HttpPut("UpdateStatus/{orderId}")]
-        public async Task<IActionResult> UpdateOrder(long orderId, [FromBody] UpdateOrderCommand command)
+        [HttpPut("UpdateOrder")]
+        public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderCommand command)
         {
             try
             {
                 await _mediator.Send(command);
 
-                return Ok(new ApiResponse<string> { Success = true, Data = "Order Status Updated Successfully!" });
+                return Ok(new ApiResponse<string>("Order Updated Successfully!"));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
-        [HttpPost("{id}/cancel")]
-        public async Task<IActionResult> CancelOrder(long OrderId, [FromBody] CancelOrderRequestDto reqestDto)
+        [HttpPost("cancelOrder")]
+        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderRequestDto reqestDto)
         {
             try
             {
-                await _mediator.Send(new CancelOrderCommand(OrderId, reqestDto.Reason));
+                await _mediator.Send(new CancelOrderCommand(reqestDto.Id, reqestDto.Reason));
 
-                return Ok(new ApiResponse<string> { Success = true, Data = "Order Canceled Successfully!" });
+                return Ok(new ApiResponse<string>("Order Canceled Successfully!"));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
         // =================================================================
-        // 2. QUERIES (القراءة والاستعلام)
+        // 2. QUERIES
         // =================================================================
 
         [HttpGet("GetOrder/{id}")]
@@ -78,46 +78,47 @@ namespace API.Modules.Sales
         {
             try
             {
-                var order = await _mediator.Send(new GetOrderByIdQuery(id));
-                return Ok(order);
+                OrderDto order = await _mediator.Send(new GetOrderByIdQuery(id));
+
+                return Ok(new ApiResponse<OrderDto>(order));
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { Error = ex.Message });
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
         [HttpGet("BranchOrders/{branchId}")]
-        public async Task<IActionResult> GetOrdersByBranch(long BranchId)
+        public async Task<IActionResult> GetOrdersByBranch(long branchId)
         {
             try
             {
-                var orders = await _mediator.Send(new GetOrderByBranchQuery(BranchId));
-                return Ok(orders);
+                List<OrderSummaryDto> orders = await _mediator.Send(new GetOrderByBranchQuery(branchId));
+
+                return Ok(new ApiResponse<List<OrderSummaryDto>>(orders));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
         [HttpGet("Branch/{branchId}/Status/{status}")]
-        public async Task<IActionResult> GetOrdersByBranchAndStatus(long BranchId, OrderStatus Status)
+        public async Task<IActionResult> GetOrdersByBranchAndStatus(long branchId, OrderStatus status)
         {
             try
             {
-                var orders = await _mediator.Send(new GetOrderByStatusQuery(BranchId, Status));
+                List<OrderSummaryDto> orders = await _mediator.Send(new GetOrderByStatusQuery(branchId, status));
 
-
-                return Ok(orders);
+                return Ok(new ApiResponse<List<OrderSummaryDto>>(orders));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
 
@@ -126,13 +127,13 @@ namespace API.Modules.Sales
         {
             try
             {
-                var orders = await _mediator.Send(new GetOrderByTenantQuery(tenantId));
+                List<OrderSummaryDto> orders = await _mediator.Send(new GetOrderByTenantQuery(tenantId));
 
-                return Ok(orders);
+                return Ok(new ApiResponse<List<OrderSummaryDto>>(orders));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<string>.Fail().Data = ex.Message);
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
     }

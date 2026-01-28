@@ -51,8 +51,8 @@ namespace Infrastructure.Repositories
                     o.Notes,
                     o.CreatedAt,
                     o.OrderDetails.Select(od => new OrderDetailDto(
-                        od.Id,
                         od.ItemId,
+                        od.ItemVariantId,
                         od.Quantity,
                         od.UnitPrice,
                         od.TotalPrice,
@@ -158,13 +158,6 @@ namespace Infrastructure.Repositories
         public async Task<bool> OrderExistsAsync(long id)
         {
             return await _context.Orders.AnyAsync(o => o.Id == id);
-        }
-
-        public async Task<long> AddOrderDetailAsync(OrderDetail orderDetail)
-        {
-            await _context.OrderDetails.AddAsync(orderDetail);
-            await _context.SaveChangesAsync();
-            return orderDetail.Id;
         }
 
         public async Task<IEnumerable<OrderDetail>> GetOrderDetailsByOrderIdAsync(long orderId)

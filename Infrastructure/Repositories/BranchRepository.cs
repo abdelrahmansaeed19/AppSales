@@ -58,5 +58,10 @@ namespace Infrastructure.Repositories
         {
             return await _context.Set<Branch>().AnyAsync(b => b.Id == id);
         }
+
+        public async Task<bool> ExistsByNameAsync(string name)
+        {
+            return await _context.Set<Branch>().AnyAsync(b => b.Name == name);
+        }
     }
 }

@@ -25,6 +25,12 @@ namespace Application.Modules.Tenant.Queries
             {
                 Id = tenant.Id,
                 Name = tenant.Name,
+                Email = tenant.Email,
+                Phone = tenant.Phone,
+                Address = tenant.Address,
+                Logo = tenant.Logo,
+                Currency = tenant.Currency,
+                TaxRate = tenant.TaxRate,
                 CreatedAt = tenant.CreatedAt
             };
 

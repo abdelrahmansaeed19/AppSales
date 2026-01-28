@@ -45,6 +45,12 @@ namespace Domain.Entities.Sales
             };
         }
 
+        public void AddOrderDetail(OrderDetail orderDetail)
+        {
+            OrderDetails.Add(orderDetail);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void UpdateStatus(OrderStatus newStatus)
         {
             Status = newStatus;

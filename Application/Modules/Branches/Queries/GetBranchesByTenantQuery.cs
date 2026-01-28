@@ -16,6 +16,11 @@ namespace Application.Modules.Branches.Queries
         {
             var branches = await _branchRepository.GetByTenantIdAsync(request.TenantId);
 
+            if (branches == null || !branches.Any())
+            {
+                throw new KeyNotFoundException($"No branches found for TenantId {request.TenantId}");
+            }
+
             var branchDtos = branches.Select(branch => new BranchDto
             {
                 Id = branch.Id,

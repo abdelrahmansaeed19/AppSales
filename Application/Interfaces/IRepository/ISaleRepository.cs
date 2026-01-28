@@ -27,7 +27,6 @@ namespace Application.Interfaces.IRepository
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(long id);
         Task<bool> OrderExistsAsync(long id);
-        Task<long> AddOrderDetailAsync(OrderDetail orderDetail);
         Task<IEnumerable<OrderDetail>> GetOrderDetailsByOrderIdAsync(long orderId);
         Task UpdateOrderDetailAsync(OrderDetail orderDetail);
         Task DeleteOrderDetailAsync(long id);

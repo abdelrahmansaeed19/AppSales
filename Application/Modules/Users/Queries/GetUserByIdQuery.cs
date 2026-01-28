@@ -22,6 +22,7 @@ namespace Application.Modules.Users.Queries
         public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
+
             if (user == null)
             {
                 throw new KeyNotFoundException($"User with ID {request.Id} not found.");

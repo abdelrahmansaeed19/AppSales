@@ -5,7 +5,7 @@ using Domain.Entities.Tenants;
 namespace Application.Modules.Branches.Commands
 {
     public record CreateBranchCommand(
-        long Id,
+        long TenantId,
         string Name,
         string ? Address,
         string ? Phone,
@@ -22,15 +22,15 @@ namespace Application.Modules.Branches.Commands
         }
         public async Task<long> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
         {
-            var existingBranch = await _branchRepository.GetByIdAsync(request.Id);
+            var existingBranch = await _branchRepository.ExistsByNameAsync(request.Name);
 
-            if (existingBranch != null)
+            if (existingBranch)
             {
-                throw new InvalidOperationException($"Branch with ID {request.Id} already exists.");
+                throw new InvalidOperationException($"Branch with Name {request.Name} already exists.");
             }
 
             var branch = Branch.Create(
-                request.Id,
+                request.TenantId,
                 request.Name,
                 request.Address,
                 request.Phone,

@@ -1,25 +1,26 @@
-using MediatR;
 using Application.Interfaces.IRepository;
+using Application.Modules.Sales.DTOs;
 using Domain.Entities.Sales;
 using Domain.Enums;
+using MediatR;
 
 namespace Application.Modules.Sales.Commands
 {
     public record CreateOrderCommand(
-        long tenantId, 
-        long branchId,
-        long? shiftId,
-        long? customerId,
-        OrderType orderType,
-        OrderStatus status,
-        decimal subtotal,
-        decimal taxAmount,
-        decimal discountAmount,
-        decimal totalAmount,
-        decimal paidAmount,
-        string? notes,
-        long? createdByUserId,
-        ICollection<OrderDetail> orderDetails
+        long TenantId,
+        long BranchId,
+        long ShiftId,
+        long CustomerId,
+        OrderType OrderType,
+        OrderStatus Status,
+        decimal Subtotal,
+        decimal TaxAmount,
+        decimal DiscountAmount,
+        decimal TotalAmount,
+        decimal PaidAmount,
+        string? Notes,
+        long CreatedAtId,
+        List<OrderDetailDto> Items
         ) : IRequest<long>;
 
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, long>
@@ -33,29 +34,39 @@ namespace Application.Modules.Sales.Commands
 
         public async Task<long> Handle(CreateOrderCommand request, CancellationToken ct)
         {
-            if (request.totalAmount < 0)
+            if (request.TotalAmount < 0)
             {
                 throw new ArgumentException("Total amount cannot be negative.");
             }
 
-            var order = new Order
+            Order order = Order.Create(
+                tenantId: request.TenantId,
+                branchId: request.BranchId,
+                shiftId: request.ShiftId,
+                customerId: request.CustomerId,
+                orderType: request.OrderType,
+                subtotal: request.Subtotal,
+                taxAmount: request.TaxAmount,
+                discountAmount: request.DiscountAmount,
+                totalAmount: request.TotalAmount,
+                notes: request.Notes,
+                createdByUserId: request.CreatedAtId
+            );
+
+            foreach (var item in request.Items)
             {
-                TenantId = request.tenantId,
-                BranchId = request.branchId,
-                ShiftId = request.shiftId,
-                CustomerId = request.customerId,
-                OrderType = request.orderType,
-                Status = request.status,
-                Subtotal = request.subtotal,
-                TaxAmount = request.taxAmount,
-                DiscountAmount = request.discountAmount,
-                TotalAmount = request.totalAmount,
-                PaidAmount = request.paidAmount,
-                Notes = request.notes,
-                CreatedByUserId = request.createdByUserId,
-                OrderDetails = request.orderDetails
-            };
-            await _salesRepository.AddOrderAsync(order);
+                var orderDetail = OrderDetail.Create(
+                    orderId: order.Id,
+                    itemId: item.ItemId,
+                    itemVariantId: item.ItemVariantId,
+                    quantity: item.Quantity,
+                    unitPrice: item.UnitPrice,
+                    notes: item.Notes
+                );
+                order.AddOrderDetail(orderDetail);
+            }
+
+            order.Id = await _salesRepository.AddOrderAsync(order);
 
             return order.Id;
         }

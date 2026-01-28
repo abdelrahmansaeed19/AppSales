@@ -21,6 +21,11 @@ namespace Application.Modules.Users.Queries
         {
             var users = await _userRepository.GetAllByTenantIdAsync(request.TenantId);
 
+            if (users == null || !users.Any())
+            {
+                throw new KeyNotFoundException($"No users found for TenantId {request.TenantId}");
+            }
+
             var userDtos = users.Select(user => new UserDto
             {
                 Id = user.Id,

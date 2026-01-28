@@ -3,6 +3,7 @@ using MediatR;
 using Application.Modules.Sales.Commands;
 using Domain.Entities.Sales;
 using Domain.Enums;
+using Application.Modules.Sales.DTOs;
 
 namespace Application.Modules.Sales.Handler
 {
@@ -15,7 +16,7 @@ namespace Application.Modules.Sales.Handler
             _saleRepository = saleRepository;
         }
 
-        private void UpdateOrderDetails(Order order, ICollection<OrderDetail> newDetails)
+        private void UpdateOrderDetails(Order order, List<UpdateOrderDetailDto> newDetails)
         {
             var detailsToRemove = order.OrderDetails
                 .Where(od => !newDetails.Any(nd => nd.Id == od.Id && od.Id != 0))
@@ -58,7 +59,7 @@ namespace Application.Modules.Sales.Handler
                         newDetail.Notes);
 
 
-                    order.OrderDetails.Add(detailToAdd);
+                    order.AddOrderDetail(detailToAdd);
                 }
             }
         }
@@ -66,6 +67,7 @@ namespace Application.Modules.Sales.Handler
         public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _saleRepository.GetOrderByIdAsync(request.OrderId);
+
             if (order == null)
             {
                 throw new Exception("Order not found");
@@ -86,7 +88,7 @@ namespace Application.Modules.Sales.Handler
                 order.UpdatePaidAmount(request.paidAmount);
             }
 
-            UpdateOrderDetails(order, request.orderDetails);
+            UpdateOrderDetails(order, request.newDetails);
 
             await _saleRepository.UpdateOrderAsync(order);
 

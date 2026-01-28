@@ -4,9 +4,11 @@ using System.Text;
 
 namespace Application.Modules.Sales.DTOs
 {
-    public record OrderDetailDto(
+    public record UpdateOrderDetailDto
+    (
+        long Id,
         long ItemId,
-        long ? ItemVariantId,
+        long? ItemVariantId,
         int Quantity,
         decimal UnitPrice,
         decimal TotalPrice,
