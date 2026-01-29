@@ -1,33 +1,30 @@
-﻿using App_Sales.Data;
-using App_Sales.Models;
-using App_Sales.Models.Inventory;
-using System;
-
+﻿using Domain.Entities.Inventory;
+using Infrastructure.Persistence.Contexts;
 public class ItemRepository : IItemRepository
 {
-    private readonly App_Context _context;
+    private readonly AppSalesDbContext _context;
 
-    public ItemRepository(App_Context context)
+    public ItemRepository(AppSalesDbContext context)
     {
         _context = context;
     }
 
     public List<Item> GetAll(long tenantId)
-        => _context.item.Where(i => i.TenantId == tenantId).ToList();
+        => _context.Items.Where(i => i.TenantId == tenantId).ToList();
 
     public Item GetById(long id)
-        => _context.item.FirstOrDefault(i => i.Id == id);
+        => _context.Items.FirstOrDefault(i => i.Id == id);
 
     public void Add(Item item)
-        => _context.item.Add(item);
+        => _context.Items.Add(item);
 
     public void Update(Item item)
-        => _context.item.Update(item);
+        => _context.Items.Update(item);
 
     public void Delete(Item item)
     {
      
-        _context.item.Remove(item);
+        _context.Items.Remove(item);
 
 
         

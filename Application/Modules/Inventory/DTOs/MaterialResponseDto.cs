@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 
 namespace Application.Modules.Inventory.DTOs
 {

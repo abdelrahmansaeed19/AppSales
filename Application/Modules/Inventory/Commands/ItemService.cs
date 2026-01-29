@@ -1,5 +1,7 @@
 ﻿using Application.Modules.Inventory.DTOs;
 
+using Domain.Entities.Inventory;
+
 
 public class ItemService
 {

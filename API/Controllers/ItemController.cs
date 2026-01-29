@@ -1,8 +1,8 @@
 ﻿using Application.Modules.Inventory.DTOs;
-using App_Sales.Models;
-using App_Sales.Models.Inventory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Entities.Inventory;
+using Application.Interfaces.IRepository;
 
 namespace App_Sales.Controllers
 {

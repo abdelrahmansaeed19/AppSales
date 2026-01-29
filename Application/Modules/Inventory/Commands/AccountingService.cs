@@ -32,6 +32,7 @@ public class AccountingService
         };
 
         _repo.AddJournalEntry(entry);
+
         _repo.Save();
     }
 

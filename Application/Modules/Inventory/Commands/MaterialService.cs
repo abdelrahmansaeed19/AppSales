@@ -2,6 +2,8 @@
 
 using Domain.Entities.Inventory;
 
+using Application.Interfaces.IRepository;
+
 
 public class MaterialService
 {

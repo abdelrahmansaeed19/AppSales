@@ -1,31 +1,30 @@
-﻿using App_Sales.Data;
-using App_Sales.Models;
-using App_Sales.Models.Inventory;
-using System;
+﻿using Domain.Entities.Inventory;
+using Infrastructure.Persistence.Contexts;
+using Application.Interfaces.IRepository;
 
 public class MaterialRepository : IMaterialRepository
 {
-    private readonly App_Context _context;
+    private readonly AppSalesDbContext _context;
 
-    public MaterialRepository(App_Context context)
+    public MaterialRepository(AppSalesDbContext context)
     {
         _context = context;
     }
 
     public List<Material> GetAll(long tenantId)
-        => _context.material.Where(m => m.TenantId == tenantId).ToList();
+        => _context.Materials.Where(m => m.TenantId == tenantId).ToList();
 
     public Material GetById(long id)
-        => _context.material.FirstOrDefault(m => m.Id == id);
+        => _context.Materials.FirstOrDefault(m => m.Id == id);
 
     public void Add(Material material)
-        => _context.material.Add(material);
+        => _context.Materials.Add(material);
 
     public void Update(Material material)
-        => _context.material.Update(material);
+        => _context.Materials.Update(material);
 
     public void Delete(Material material)
-        => _context.material.Remove(material);
+        => _context.Materials.Remove(material);
 
     public void Save()
         => _context.SaveChanges();
