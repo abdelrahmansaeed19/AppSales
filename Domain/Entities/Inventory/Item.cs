@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Entities.Inventory
+namespace App_Sales.Models.Inventory
 {
     public class Item
     {
