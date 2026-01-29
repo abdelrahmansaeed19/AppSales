@@ -70,6 +70,7 @@ namespace Infrastructure.Repositories
                 .Select(o => new OrderSummaryDto(
                     o.Id,
                     o.BranchId,
+                    o.CustomerId,
                     o.OrderType.ToString(),
                     o.Status.ToString(),
                     o.TotalAmount,
@@ -87,6 +88,7 @@ namespace Infrastructure.Repositories
                 .Select(o => new OrderSummaryDto(
                     o.Id,
                     o.BranchId,
+                    o.CustomerId,
                     o.OrderType.ToString(),
                     o.Status.ToString(),
                     o.TotalAmount,
@@ -104,6 +106,7 @@ namespace Infrastructure.Repositories
                 .Select(o => new OrderSummaryDto(
                     o.Id,
                     o.BranchId,
+                    o.CustomerId,
                     o.OrderType.ToString(),
                     o.Status.ToString(),
                     o.TotalAmount,

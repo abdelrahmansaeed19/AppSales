@@ -8,7 +8,7 @@ using API.Responses;
 
 namespace API.Modules.Sales
 {
-    [Route("api/[controller]")]
+    [Route("sales")]
     [ApiController]
     public class Sales_Controller : Controller
     {
@@ -85,6 +85,20 @@ namespace API.Modules.Sales
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+        }
+
+        [HttpGet("AllOrders")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            try
+            {
+                List<OrderSummaryDto> orders = await _mediator.Send(new GetAllOrdersQuery());
+                return Ok(new ApiResponse<List<OrderSummaryDto>>(orders));
             }
             catch (Exception ex)
             {

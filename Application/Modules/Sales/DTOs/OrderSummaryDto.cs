@@ -7,6 +7,7 @@ namespace Application.Modules.Sales.DTOs
     public record OrderSummaryDto(
         long Id,
         long BranchId,
+        long? CustomerId,
         string OrderType,
         string Status,
         decimal TotalAmount,
