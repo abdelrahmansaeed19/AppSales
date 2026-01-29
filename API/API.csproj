@@ -17,7 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts%28DTOs%29\Accounting\" />
     <Folder Include="Contracts%28DTOs%29\Customers\" />
+    <Folder Include="Contracts%28DTOs%29\Inventory\" />
+    <Folder Include="Contracts%28DTOs%29\Reports\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Filters\" />
     <Folder Include="wwwroot\" />

@@ -1,4 +1,4 @@
-﻿using App_Sales.DTO.ReportDTO;
+﻿using Application.Modules.Inventory.DTOs;
 using App_Sales.Repository.ReportRepository;
 
 public class ReportService
@@ -13,6 +13,6 @@ public class ReportService
     public List<InventoryReportDto> Inventory(long tenantId)
         => _repo.GetInventoryReport(tenantId);
 
-    public List<SalesReportDto> Sales(long tenantId, DateTime from, DateTime to)
-        => _repo.GetSalesReport(tenantId, from, to);
+    //public List<SalesReportDto> Sales(long tenantId, DateTime from, DateTime to)
+    //    => _repo.GetSalesReport(tenantId, from, to);
 }

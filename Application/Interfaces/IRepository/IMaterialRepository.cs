@@ -1,5 +1,4 @@
-﻿using App_Sales.Models;
-using App_Sales.Models.Inventory;
+﻿using Domain.Entities.Inventory;
 
 public interface IMaterialRepository
 {

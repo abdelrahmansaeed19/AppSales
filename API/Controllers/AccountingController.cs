@@ -1,4 +1,4 @@
-﻿using App_Sales.DTO.AccountingDTO;
+﻿using Application.Modules.Inventory.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
 

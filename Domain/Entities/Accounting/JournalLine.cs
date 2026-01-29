@@ -1,4 +1,4 @@
-﻿namespace App_Sales.Models.Accounting
+﻿namespace Domain.Entities.Journal
 {
     public class JournalLine
     {

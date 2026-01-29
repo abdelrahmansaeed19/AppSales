@@ -1,4 +1,4 @@
-﻿using App_Sales.DTO.InventoryDTO.MaterialsDTO;
+﻿using Application.Modules.Inventory.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App_Sales.Controllers

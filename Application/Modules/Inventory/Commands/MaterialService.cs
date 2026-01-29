@@ -1,6 +1,6 @@
-﻿using App_Sales.DTO.InventoryDTO.MaterialsDTO;
-using App_Sales.Models;
-using App_Sales.Models.Inventory;
+﻿using Application.Modules.Inventory.DTOs;
+
+using Domain.Entities.Inventory;
 
 
 public class MaterialService

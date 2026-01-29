@@ -1,6 +1,8 @@
-﻿using App_Sales.DTO.AccountingDTO;
-using App_Sales.Models.Accounting;
-using App_Sales.Repository.AccountingRepository;
+﻿using Application.Modules.Inventory.DTOs;
+
+using Application.Interfaces.IRepository;
+
+using Domain.Entities.Journal;
 
 public class AccountingService
 {

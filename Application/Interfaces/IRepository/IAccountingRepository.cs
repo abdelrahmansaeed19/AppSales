@@ -1,6 +1,7 @@
-﻿using App_Sales.Models.Accounting;
+﻿using Domain.Entities.Journal;
+using Domain.Entities.Accounts;
 
-namespace App_Sales.Repository.AccountingRepository
+namespace Application.Interfaces.IRepository
 {
     public interface IAccountingRepository
     {

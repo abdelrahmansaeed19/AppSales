@@ -1,6 +1,4 @@
-﻿using App_Sales.DTO.InventoryDTO.ItemDTO;
-using App_Sales.Models;
-using App_Sales.Models.Inventory;
+﻿using Application.Modules.Inventory.DTOs;
 
 
 public class ItemService
