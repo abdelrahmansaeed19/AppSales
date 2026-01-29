@@ -2,6 +2,8 @@
 using Domain.Entities.Customers;
 using Domain.Entities.Expenses;
 using Domain.Entities.Inventory;
+using Domain.Entities.Journal;
+using Domain.Entities.Accounts;
 using Domain.Entities.Sales;
 using Domain.Entities.Tenants;
 using Domain.Entities.Users;
@@ -25,6 +27,12 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Material> Materials { get; set; }
+
+        public DbSet<JournalEntry> JournalEntries { get; set; }
+
+        public DbSet<JournalLine> JournalLines { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
