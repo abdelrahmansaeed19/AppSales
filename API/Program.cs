@@ -108,7 +108,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // 7️⃣ Middleware
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
