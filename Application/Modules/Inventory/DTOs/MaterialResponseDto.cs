@@ -6,6 +6,8 @@ namespace Application.Modules.Inventory.DTOs
     {
         public long Id {  get; set; }
          public string Name { get; set; } = string.Empty;
+        public long TenantId { get; set; }
+        public long BranchId { get; set; }
         public string? Description { get; set; }
         public string Unit { get; set; } = string.Empty;
         public decimal CurrentQuantity { get; set; } = 0.00m;

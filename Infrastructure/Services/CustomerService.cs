@@ -23,7 +23,10 @@ namespace Infrastructure.Services
             var customer = new Customer
             {
                 Name = request.Name,
-                CurrentBalance = request.InitialBalance
+                CurrentBalance = request.InitialBalance,
+                Email = request.Email,
+                Address = request.Address,
+                Phone = request.Phone
             };
 
             var result = await _customerRepository.AddAsync(customer);
@@ -32,7 +35,10 @@ namespace Infrastructure.Services
             {
                 Id = result.Id,
                 Name = result.Name,
-                CurrentBalance = result.CurrentBalance
+                CurrentBalance = result.CurrentBalance,
+                Email = result.Email,
+                Address = result.Address,
+                Phone = result.Phone
             };
         }
 
@@ -103,7 +109,10 @@ namespace Infrastructure.Services
                 {
                     Id = customer.Id,
                     Name = customer.Name,
-                    CurrentBalance = customer.CurrentBalance
+                    CurrentBalance = customer.CurrentBalance,
+                    Email = customer.Email,
+                    Address = customer.Address,
+                    Phone = customer.Phone
                 },
                 Transactions = transactions.Select(t => new TransactionDto
                 {
@@ -112,7 +121,8 @@ namespace Infrastructure.Services
                     Debit = t.Debit,
                     Credit = t.Credit,
                     Balance = t.Balance,
-                    Date = t.Date
+                    Date = t.Date,
+
                 }).ToList()
             };
         }

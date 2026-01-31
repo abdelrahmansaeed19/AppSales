@@ -23,7 +23,14 @@ public class MaterialService
                 Name = m.Name,
                 Unit = m.Unit,
                 CurrentQuantity = m.CurrentQuantity,
-                MinQuantity = m.MinQuantity
+                MinQuantity = m.MinQuantity,
+                BranchId= m.BranchId,
+                TenantId= m.TenantId,
+                CostPerUnit = m.CostPerUnit,
+                Description = m.Description,
+                ExpiryDate = m.ExpiryDate
+
+
             }).ToList();
     }
 
@@ -38,7 +45,12 @@ public class MaterialService
             Unit = dto.Unit,
             CurrentQuantity = dto.CurrentQuantity,
             MinQuantity = dto.MinQuantity,
-            CostPerUnit = dto.CostPerUnit
+            CostPerUnit = dto.CostPerUnit,
+            BranchId = dto.BranchId,
+            TenantId = dto.TenantId,
+            Description = dto.Description,
+            ExpiryDate = dto.ExpiryDate
+
         };
 
         _repo.Add(material);
@@ -55,6 +67,13 @@ public class MaterialService
         material.Unit = dto.Unit;
         material.CurrentQuantity = dto.CurrentQuantity;
         material.MinQuantity = dto.MinQuantity;
+        material.CostPerUnit = dto.CostPerUnit;
+        material.Description = dto.Description;
+        material.ExpiryDate = dto.ExpiryDate;
+        material.BranchId = dto.BranchId;
+        material.TenantId = dto.TenantId;
+
+
 
         _repo.Update(material);
         _repo.Save();

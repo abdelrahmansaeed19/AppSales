@@ -1,10 +1,11 @@
-﻿using Application.Modules.Branches.Commands;
+﻿using API.Responses;
+using Application.Modules.Branches.Commands;
+using Application.Modules.Branches.DTOs;
 using Application.Modules.Branches.Queries;
+using Domain.Entities.Tenants;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using API.Responses;
-using Application.Modules.Branches.DTOs;
 
 namespace API.Controllers
 {
@@ -72,6 +73,28 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{id:long}")]
+        public async Task<IActionResult> GetBranchById(long id)
+        {
+            var query = new GetBranchByIdQuery(id);
+
+            try
+            {
+                var branch = await _mediator.Send(query);
+
+                if (branch == null)
+                    return NotFound(new ApiResponse<string> { Success = false, Data = "Branch not found" });
+
+                return Ok(new ApiResponse<BranchDto>(branch));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+        }
+
+   
         [HttpDelete("deactivate/{id}")]
         public async Task<IActionResult> DeactivateBranch(int id)
         {

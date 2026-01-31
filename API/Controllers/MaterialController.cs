@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace App_Sales.Controllers
 {
     [ApiController]
-    [Route("api/materials")]
+    [Route("materials")]
     public class MaterialController : ControllerBase
     {
         private readonly MaterialService _materialService;
@@ -15,12 +15,15 @@ namespace App_Sales.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] long tenantId)
         {
-            long tenantId = 1;
+            if (tenantId <= 0)
+                return BadRequest("tenantId is required and must be greater than 0.");
+
             var materials = _materialService.GetAll(tenantId);
             return Ok(materials);
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(long id)

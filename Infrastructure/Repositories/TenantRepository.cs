@@ -31,14 +31,13 @@ namespace Infrastructure.Repositories
         }
         public async Task DeleteAsync(long id)
         {
-            Tenant? tenant = await GetByIdAsync(id);
+            var tenant = await GetByIdAsync(id);
 
-            if (tenant != null)
-            {
-                _context.Set<Tenant>().Remove(tenant);
+            if (tenant == null)
+                throw new KeyNotFoundException("Tenant not found");
 
-                await _context.SaveChangesAsync();
-            }
+            _context.Set<Tenant>().Remove(tenant);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Branch>> GetBranchesByTenantIdAsync(long tenantId)
@@ -72,3 +71,15 @@ namespace Infrastructure.Repositories
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

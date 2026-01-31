@@ -119,5 +119,26 @@ namespace API.Controllers
                     new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteUser(long id)
+        {
+            var command = new DeleteUserCommand(id);
+            try
+            {
+                await _mediator.Send(command);
+                return Ok(new ApiResponse<string>("User deleted successfully."));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+        }
+
     }
 }

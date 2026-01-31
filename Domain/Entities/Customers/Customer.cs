@@ -8,6 +8,10 @@ namespace Domain.Entities.Customers
         public string Name { get; set; }
         public decimal CurrentBalance { get; set; }
         public List<Transaction> Transactions { get; set; } = new();
+         public string? Email { get; set; }
+        public string? Address { get; set; }
+
+        public string? Phone { get; set; }
     }
 
 }

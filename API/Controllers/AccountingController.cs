@@ -29,9 +29,8 @@ public class AccountingController : ControllerBase
     }
 
     [HttpGet("trial-balance")]
-    public IActionResult TrialBalance()
+    public IActionResult TrialBalance([FromQuery] long tenantId)
     {
-        long tenantId = 1;
         return Ok(_service.TrialBalance(tenantId));
     }
 }

@@ -1,11 +1,12 @@
 ﻿using Application.Modules.Auth.Commands;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Modules.Auth
 {
     [ApiController]
-    [Route("Auth")]
+    [Route("auth")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -15,7 +16,7 @@ namespace API.Modules.Auth
             _mediator = mediator;
         }
 
-        // ---------------- Register ---------------
+        // ---------------- Register -------------
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
@@ -43,7 +44,7 @@ namespace API.Modules.Auth
             {
                 // Creates user after successful verification
                 await _mediator.Send(command);
-                return Ok(new { message = "Email verified. Your account is now active." });
+                return Ok(new { message = "Email verified. Your account is pending admin approval" });
             }
             catch (InvalidOperationException ex)
             {
@@ -53,6 +54,14 @@ namespace API.Modules.Auth
             {
                 return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
             }
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPut("approve-user/{id}")]
+        public async Task<IActionResult> ApproveUser(long id)
+        {
+            await _mediator.Send(new ApproveUserCommand(id));
+            return Ok(new { message = "User approved successfully." });
         }
 
         // ---------------- Resend Verification ----------------
@@ -111,6 +120,8 @@ namespace API.Modules.Auth
                 return StatusCode(500, new { message = "Something went wrong", detail = ex.Message });
             }
         }
+
+
 
         // ---------------- Forgot Password ----------------
         [HttpPost("forgot-password")]

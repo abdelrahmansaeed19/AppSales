@@ -24,11 +24,10 @@ public class ItemRepository : IItemRepository
     public void Delete(Item item)
     {
      
-        _context.Items.Remove(item);
-
-
-        
+        _context.Items.Remove(item);   
     }
+    public List<Item> GetAllGlobal()
+    => _context.Items.ToList();
     public void Save()
         => _context.SaveChanges();
 }

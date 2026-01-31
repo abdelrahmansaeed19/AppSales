@@ -28,6 +28,9 @@ namespace Application.Modules.Auth.Handler
             if (!user.IsEmailVerified)
                 throw new InvalidOperationException("Email not verified");
 
+            if (!user.IsActive)
+                throw new InvalidOperationException("Your account is pending admin approval.");
+
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 throw new InvalidOperationException("Invalid credentials");
 

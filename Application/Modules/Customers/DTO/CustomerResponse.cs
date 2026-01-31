@@ -9,6 +9,11 @@ namespace Application.Modules.Customers.DTO
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public decimal CurrentBalance { get; set; }
+        public string? Email { get; set; }
+        public string? Address { get; set; }
+
+        public string? Phone { get; set; }
+
     }
 
     public class CustomerStatementResponse

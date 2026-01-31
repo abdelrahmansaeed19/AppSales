@@ -22,7 +22,10 @@ namespace Application.Modules.Customers.Handler
             return await _service.CreateCustomerAsync(new CreateCustomerRequest
             {
                 Name = request.Name,
-                InitialBalance = request.InitialBalance
+                InitialBalance = request.InitialBalance,
+                Email = request.Email,
+                Address = request.Address,
+                Phone = request.Phone
             });
         }
     }

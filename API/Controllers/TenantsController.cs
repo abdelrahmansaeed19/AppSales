@@ -98,5 +98,23 @@ namespace API.Modules.Tenant
                    new ApiResponse<string> { Success = false, Data = ex.Message });
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTenants()
+        {
+            try
+            {
+                var query = new GetAllTenantsQuery();
+                var tenants = await _mediator.Send(query);
+                return Ok(new ApiResponse<IEnumerable<TenantDto>>(tenants));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<string> { Success = false, Data = ex.Message });
+            }
+        }
+
     }
 }

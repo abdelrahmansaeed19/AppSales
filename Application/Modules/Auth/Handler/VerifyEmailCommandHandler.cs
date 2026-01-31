@@ -46,7 +46,7 @@ namespace Application.Modules.Auth.Handler
                 Role = temp.Role,
                 TenantId = temp.TenantId,
                 BranchId = temp.BranchId,
-                IsActive = true,
+                IsActive = false,
                 IsEmailVerified = true,
             };
 

@@ -6,7 +6,7 @@ using Application.Interfaces.IRepository;
 
 namespace App_Sales.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("item")]
     [ApiController]
     public class ItemController : ControllerBase
     {
@@ -22,18 +22,20 @@ namespace App_Sales.Controllers
         [HttpGet]
         public IActionResult GetAll(long tenantId)
         {
-            var MaterialDTOs = MaterialRepository.GetAll(tenantId)
+            var MaterialDTOs = ItemRepository.GetAll(tenantId)
             .Select(m => new MaterialResponseDto
             {
                Id = m.Id,
                Name = m.Name,
-               Description = m.Description,
-               Unit = m.Unit,
-               CurrentQuantity = m.CurrentQuantity,
-               MinQuantity = m.MinQuantity,
-               CostPerUnit = m.CostPerUnit,
-               ExpiryDate = m.ExpiryDate
-        })
+               BranchId = m.BranchId,
+                TenantId = m.TenantId,
+                Description = m.Description,
+                CurrentQuantity = m.CurrentStock,
+                MinQuantity = m.MinStockLevel,
+                CostPerUnit = m.CostPrice,
+
+                    
+            })
         .ToList();
             return Ok(MaterialDTOs);
         }
@@ -55,8 +57,16 @@ namespace App_Sales.Controllers
         {
             var itemEntity = ItemRepository.GetById(id);
             if (itemEntity == null)
+                return NotFound($"Item with ID {id} not found.");
+
+            // Check for duplicate SKU in other items
+            if (!string.IsNullOrWhiteSpace(itemDto.Sku))
             {
-                return NotFound($"Order with ID {id} not found.");
+                var duplicateSku = ItemRepository.GetAllGlobal()
+                    .Any(i => i.Sku == itemDto.Sku && i.Id != id);
+
+                if (duplicateSku)
+                    return BadRequest($"An item with SKU '{itemDto.Sku}' already exists.");
             }
 
             itemEntity.CategoryId = itemDto.CategoryId;
@@ -71,14 +81,27 @@ namespace App_Sales.Controllers
             itemEntity.IsActive = itemDto.IsActive;
 
             ItemRepository.Save();
-            return Ok();
+            return Ok(itemEntity);
         }
+
         [HttpPost]
         public IActionResult Add(CreateItemDto itemDto)
         {
+            if (string.IsNullOrWhiteSpace(itemDto.Sku))
+                return BadRequest("SKU is required.");
+
+            // Check if SKU already exists globally
+            var existingItem = ItemRepository.GetAllGlobal()
+                .Any(i => i.Sku == itemDto.Sku);
+
+            if (existingItem)
+                return BadRequest($"An item with SKU '{itemDto.Sku}' already exists.");
+
             var item = new Item
             {
                 CategoryId = itemDto.CategoryId,
+                TenantId = itemDto.TenantId,
+                BranchId = itemDto.BranchId,
                 Name = itemDto.Name,
                 Description = itemDto.Description,
                 Barcode = itemDto.Barcode,
@@ -86,35 +109,31 @@ namespace App_Sales.Controllers
                 Image = itemDto.Image,
                 CostPrice = itemDto.CostPrice,
                 SellingPrice = itemDto.SellingPrice,
+                CurrentStock = itemDto.CurrentStock,
                 MinStockLevel = itemDto.MinStockLevel,
-               
-
-
+                IsActive = true
             };
+
             ItemRepository.Add(item);
             ItemRepository.Save();
 
-
-            return Ok();
-
+            return Ok(item);
         }
 
-            [HttpDelete]
+
+        [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-
             var item = ItemRepository.GetById(id);
             if (item == null)
-            {
                 return NotFound();
-            }
 
             ItemRepository.Delete(item);
             ItemRepository.Save();
 
             return Ok("Deleted");
-
         }
+
 
     }
 
