@@ -43,12 +43,12 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    # - name: Azure Login
-    #   uses: azure/login@v2
-    #   with:
-    #     client-id: ${{ vars.AppSales_CLIENT_ID_84B8 }}
-    #     tenant-id: ${{ vars.AppSales_TENANT_ID_6E65 }}
-    #     subscription-id: ${{ vars.AppSales_SUBSCRIPTION_ID_6E65 }}
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ vars.AppSales_CLIENT_ID_84B8 }}
+        tenant-id: ${{ vars.AppSales_TENANT_ID_6E65 }}
+        subscription-id: ${{ vars.AppSales_SUBSCRIPTION_ID_6E65 }}
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
