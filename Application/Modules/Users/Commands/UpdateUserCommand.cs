@@ -4,8 +4,6 @@ using Application.Interfaces.IRepository;
 
 namespace Application.Modules.Users.Commands
 {
-
-    // Change the record declaration to implement MediatR.IRequest<Unit>
     public record UpdateUserCommand(long UserId, string? Username, string? Email, string? Password, UserRole? Role) : IRequest<Unit>;
 
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>

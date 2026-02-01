@@ -5,7 +5,14 @@ using Application.Interfaces.IRepository;
 
 namespace Application.Modules.Users.Commands
 {
-    public record CreateUserCommand(string Username, string Email, string Password, UserRole Role) : IRequest<long>;
+    public record CreateUserCommand(
+        long tenantId,
+        long branchId,
+        string Username,
+        string Email,
+        string Password,
+        UserRole Role
+        ) : IRequest<long>;
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, long>
     {
@@ -22,14 +29,16 @@ namespace Application.Modules.Users.Commands
                 throw new InvalidOperationException($"A user with the email {request.Email} already exists.");
             }
 
-            var user = new User
-            {
-                Name = request.Username,
-                Email = request.Email,
-                Password = HashPassword(request.Password),
-                Role = request.Role,
-                CreatedAt = DateTime.UtcNow
-            };
+            var user = User.Create(
+                tenantId: request.tenantId,
+                name: request.Username,
+                email: request.Email,
+                passwordHash: HashPassword(request.Password),
+                role: request.Role,
+                branchId: request.branchId
+            );
+
+
             await _userRepository.AddAsync(user);
 
             return user.Id;

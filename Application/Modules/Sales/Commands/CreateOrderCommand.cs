@@ -19,7 +19,7 @@ namespace Application.Modules.Sales.Commands
         decimal TotalAmount,
         decimal PaidAmount,
         string? Notes,
-        long CreatedAtId,
+        long CreatedByUserId,
         List<OrderDetailDto> Items
         ) : IRequest<long>;
 
@@ -50,7 +50,7 @@ namespace Application.Modules.Sales.Commands
                 discountAmount: request.DiscountAmount,
                 totalAmount: request.TotalAmount,
                 notes: request.Notes,
-                createdByUserId: request.CreatedAtId
+                createdByUserId: request.CreatedByUserId
             );
 
             foreach (var item in request.Items)

@@ -8,7 +8,7 @@ using Domain.Enums;
 
 namespace Application.Modules.Sales.Handler
 {
-    public class CancelOrderCommandHandler
+    public class CancelOrderCommandHandler : IRequestHandler<CancelOrderCommand, Unit>
     {
         private readonly ISaleRepository _saleRepository;
 
