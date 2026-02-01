@@ -118,25 +118,25 @@ if (app.Environment.IsDevelopment() || true)
     });
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
-    try
-    {
-        var context = services.GetRequiredService<AppSalesDbContext>();
+//    try
+//    {
+//        var context = services.GetRequiredService<AppSalesDbContext>();
 
-        context.Database.Migrate();
+//        context.Database.Migrate();
 
-        Console.WriteLine("Database Migration applied successfully.");
-    }
-    catch (Exception ex)
-    {
-        // تسجيل الخطأ في حال فشل الاتصال بالقاعدة أثناء الـ Startup
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating the database.");
-    }
-}
+//        Console.WriteLine("Database Migration applied successfully.");
+//    }
+//    catch (Exception ex)
+//    {
+//        // تسجيل الخطأ في حال فشل الاتصال بالقاعدة أثناء الـ Startup
+//        var logger = services.GetRequiredService<ILogger<Program>>();
+//        logger.LogError(ex, "An error occurred while migrating the database.");
+//    }
+//}
 
 app.UseHttpsRedirection();
 
