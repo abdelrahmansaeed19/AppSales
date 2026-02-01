@@ -1,3 +1,4 @@
+using Application.Exceptions;
 using Application.Interfaces.IRepository;
 using Application.Modules.Sales.DTOs;
 using Domain.Entities.Sales;
@@ -37,6 +38,27 @@ namespace Application.Modules.Sales.Commands
             if (request.TotalAmount < 0)
             {
                 throw new ArgumentException("Total amount cannot be negative.");
+            }
+
+            var ItemIds = request.Items.Select(i => i.ItemId).ToList();
+
+            var Items = await _salesRepository.GetItemsByIdsInBranchAsync(ItemIds, request.BranchId);
+
+            var dbItemsMap = Items.ToDictionary(x => x.Id);
+
+            foreach (var item in request.Items)
+            {
+                if(!dbItemsMap.TryGetValue(item.ItemId, out var dbItem))
+                {
+                    throw new NotFoundException($"Item with ID {item.ItemId} not found in branch {request.BranchId}.");
+                }
+
+                if(dbItem.CurrentStock < item.Quantity)
+                {
+                    throw new InvalidOperationException($"Insufficient stock for item ID {item.ItemId}. Available: {dbItem.CurrentStock}, Requested: {item.Quantity}.");
+                }
+
+                dbItem.CurrentStock -= item.Quantity;
             }
 
             Order order = Order.Create(

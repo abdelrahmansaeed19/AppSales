@@ -4,6 +4,7 @@ using Domain.Entities.Sales;
 using Microsoft.EntityFrameworkCore;
 using Domain.Enums;
 using Application.Modules.Sales.DTOs;
+using Domain.Entities.Inventory;
 
 namespace Infrastructure.Repositories
 {
@@ -27,7 +28,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Orders
                 .AsNoTracking()
-                .Include(o => o.OrderDetails)  // impoetant to compare order with its details
+                .Include(o => o.OrderDetails)  // important to compare order with its details
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
@@ -116,6 +117,13 @@ namespace Infrastructure.Repositories
                 )).ToListAsync();
         }
 
+        public async Task<List<Item>> GetItemsByIdsInBranchAsync(List<long> itemIds, long branchId)
+        {
+            return await _context.Items
+                .Where(i => itemIds.Contains(i.Id) && i.BranchId == branchId)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
             return await _context.Orders.ToListAsync();
@@ -137,7 +145,6 @@ namespace Infrastructure.Repositories
                 .Cast<OrderStatus?>()
                 .FirstOrDefaultAsync();
         }
-
         // Get paid amount by id
         public async Task<decimal?> GetOrderPaidAmountByIdAsync(long id)
         {

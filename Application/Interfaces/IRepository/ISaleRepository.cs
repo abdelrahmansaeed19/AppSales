@@ -1,4 +1,5 @@
 using Application.Modules.Sales.DTOs;
+using Domain.Entities.Inventory;
 using Domain.Entities.Sales;
 using Domain.Enums;
 
@@ -17,6 +18,9 @@ namespace Application.Interfaces.IRepository
 
         Task<List<OrderSummaryDto>> GetOrdersByStatusAsync(long branchId, OrderStatus status);
         Task<IEnumerable<Order>> GetAllOrdersAsync();
+
+        //Get Current Stocks of item IDs in branch
+        Task<List<Item>> GetItemsByIdsInBranchAsync(List<long> itemIds, long branchId);
 
         // Get order status
         Task<OrderStatus?> GetOrderStatusByIdAsync(long id);
