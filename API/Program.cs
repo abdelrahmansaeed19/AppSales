@@ -138,7 +138,7 @@ if (app.Environment.IsDevelopment() || true)
 //    }
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
 
