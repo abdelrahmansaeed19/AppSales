@@ -47,7 +47,18 @@ public class ItemService
             Name = dto.Name,
             SellingPrice = dto.SellingPrice,
             CurrentStock = dto.CurrentStock,
-            IsActive = true
+            IsActive = true,
+            Sku = dto.Sku,
+            Barcode = dto.Barcode,
+            Description = dto.Description,
+            CategoryId = dto.CategoryId,
+            TenantId = dto.TenantId,
+            BranchId = dto.BranchId,
+            Image = dto.Image,
+            CostPrice = dto.CostPrice,
+            MinStockLevel = dto.MinStockLevel
+
+
         };
 
         _repo.Add(item);
@@ -63,6 +74,15 @@ public class ItemService
         item.Name = dto.Name;
         item.SellingPrice = dto.SellingPrice;
         item.IsActive = dto.IsActive;
+        item.CurrentStock = dto.CurrentStock;
+        item.Description = dto.Description;
+        item.Sku = dto.Sku;
+        item.Barcode = dto.Barcode;
+        item.Image = dto.Image;
+        item.CostPrice = dto.CostPrice;
+        item.MinStockLevel = dto.MinStockLevel;
+
+
 
         _repo.Update(item);
         _repo.Save();

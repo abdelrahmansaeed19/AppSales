@@ -79,6 +79,7 @@ namespace App_Sales.Controllers
             itemEntity.SellingPrice = itemDto.SellingPrice;
             itemEntity.MinStockLevel = itemDto.MinStockLevel;
             itemEntity.IsActive = itemDto.IsActive;
+            itemDto.CurrentStock = itemDto.CurrentStock;
 
             ItemRepository.Save();
             return Ok(itemEntity);
