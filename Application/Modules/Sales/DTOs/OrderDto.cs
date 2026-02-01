@@ -8,6 +8,7 @@ namespace Application.Modules.Sales.DTOs
         long Id,
         long TenantId,
         long BranchId,
+        long? CreatedByUserId,
         string OrderType,
         string Status,
         decimal Subtotal,

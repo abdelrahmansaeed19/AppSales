@@ -41,6 +41,7 @@ namespace Infrastructure.Repositories
                     o.Id,
                     o.TenantId,
                     o.BranchId,
+                    o.CreatedByUserId,
                     o.OrderType.ToString(),
                     o.Status.ToString(),
                     o.Subtotal,
