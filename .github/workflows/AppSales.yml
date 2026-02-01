@@ -11,7 +11,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: API/publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 10.0.x
-  WORKING_DIRECTORY: **/API.csproj
+  WORKING_DIRECTORY: API
 jobs:
   build:
     runs-on: ubuntu-latest
