@@ -52,7 +52,7 @@ namespace App_Sales.Controllers
             return Ok(item);
 
         }
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
         public IActionResult Update(UpdateItemDto itemDto, long id)
         {
             var itemEntity = ItemRepository.GetById(id);
@@ -79,7 +79,7 @@ namespace App_Sales.Controllers
             itemEntity.SellingPrice = itemDto.SellingPrice;
             itemEntity.MinStockLevel = itemDto.MinStockLevel;
             itemEntity.IsActive = itemDto.IsActive;
-            itemDto.CurrentStock = itemDto.CurrentStock;
+            itemEntity.CurrentStock = itemDto.CurrentStock;
 
             ItemRepository.Save();
             return Ok(itemEntity);

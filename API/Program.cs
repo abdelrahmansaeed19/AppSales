@@ -98,7 +98,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") // <-- your React dev server
+            .WithOrigins("http://localhost:5173",
+                        "https://appsales-one.vercel.app") // <-- your React dev server
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
